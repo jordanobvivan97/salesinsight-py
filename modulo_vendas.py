@@ -197,3 +197,33 @@ def calcular_metricas(dados):
         "por_categoria": receita_categoria,
         "por_regiao": receita_regiao,
     }
+
+
+# ---------------------------------------------------------------------------
+# RF06 - Segmentação de clientes
+# ---------------------------------------------------------------------------
+def segmentar_clientes(dados):
+    """Soma o gasto de cada cliente e classifica em Bronze, Prata ou Ouro."""
+    gastos_cliente = {}
+    for item in dados:
+        cli = item["cliente"]
+        gastos_cliente[cli] = gastos_cliente.get(cli, 0.0) + item["receita_total"]
+
+    segmentos = {}
+    for cli, total in gastos_cliente.items():
+        if total > 8000:
+            seg = "Ouro"
+        elif total >= 3000:
+            seg = "Prata"
+        else:
+            seg = "Bronze"
+        segmentos[cli] = {"total_gasto": round(total, 2), "segmento": seg}
+    return segmentos
+
+
+def obter_top_clientes(segmentos, top_n=5):
+    """Devolve os top_n clientes Ouro/Prata ordenados pelo maior gasto."""
+    candidatos = [(cli, info) for cli, info in segmentos.items()
+                  if info["segmento"] in ("Ouro", "Prata")]
+    candidatos.sort(key=lambda par: par[1]["total_gasto"], reverse=True)
+    return candidatos[:top_n]
