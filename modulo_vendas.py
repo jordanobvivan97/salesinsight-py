@@ -142,3 +142,58 @@ def limpar_dados(dados_brutos):
     print("\n=== RELATÓRIO DE LIMPEZA ===")
     print(f"Registros Válidos: {len(dados_limpos)} | Registros Removidos: {removidos}")
     return dados_limpos
+
+
+# ---------------------------------------------------------------------------
+# RF04 - Campos derivados
+# ---------------------------------------------------------------------------
+def criar_campos_derivados(dados):
+    """Adiciona receita_total e faixa_preco (classificada pela receita, como no enunciado)."""
+    for item in dados:
+        receita = round(item["quantidade"] * item["preco_unitario"], 2)
+        item["receita_total"] = receita
+
+        if receita < 500:
+            item["faixa_preco"] = "Baixo"
+        elif receita <= 2000:
+            item["faixa_preco"] = "Médio"
+        else:
+            item["faixa_preco"] = "Alto"
+    return dados
+
+
+# ---------------------------------------------------------------------------
+# Função de ordem superior (usada no main.py com lambda)
+# ---------------------------------------------------------------------------
+def processar_transformacao(dados, funcao):
+    """Aplica 'funcao' a cada registro e devolve uma NOVA lista."""
+    return [funcao(item) for item in dados]
+
+
+# ---------------------------------------------------------------------------
+# RF05 - Métricas agregadas
+# ---------------------------------------------------------------------------
+def calcular_metricas(dados):
+    """Receita por categoria, por região e total geral."""
+    receita_categoria = {}
+    receita_regiao = {}
+    total_geral = 0.0
+
+    for item in dados:
+        cat = item["categoria"]
+        reg = item["regiao"]
+        rec = item["receita_total"]
+
+        receita_categoria[cat] = receita_categoria.get(cat, 0.0) + rec
+        receita_regiao[reg] = receita_regiao.get(reg, 0.0) + rec
+        total_geral += rec
+
+    # Arredonda só no final para não acumular erro de arredondamento
+    receita_categoria = {k: round(v, 2) for k, v in receita_categoria.items()}
+    receita_regiao = {k: round(v, 2) for k, v in receita_regiao.items()}
+
+    return {
+        "total_geral": round(total_geral, 2),
+        "por_categoria": receita_categoria,
+        "por_regiao": receita_regiao,
+    }
