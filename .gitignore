@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+.final/
+montar_historico_git.sh
