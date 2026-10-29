@@ -2,14 +2,14 @@
 
 Pipeline simples e modularizado para tratamento, transformação e agregação de dados de vendas utilizando apenas recursos nativos do Python (`csv`, `json`, `os`, `random`).
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 - `main.py`: ponto de entrada; importa o módulo e executa o pipeline.
 - `modulo_vendas.py`: funções de geração, leitura, inspeção, limpeza, transformação, agregação, segmentação e exportação.
 - `vendas.csv`: dataset sintético de vendas (150 registros, com nulos e espaços propositais).
 - `outputs/`: relatórios gerados (`metricas_resumo.csv` e `estatisticas.json`).
 
-## 🚀 Como Executar
+## Como Executar
 
 1. Tenha o Python 3 instalado.
 2. Clone ou descompacte o repositório.
@@ -21,7 +21,7 @@ python main.py
 
 Se `vendas.csv` não existir, ele é gerado automaticamente (seed 42, resultado reprodutível).
 
-## 🔄 Etapas do Pipeline
+## Etapas do Pipeline
 
 | Etapa | Função | O que faz |
 |---|---|---|
@@ -35,7 +35,7 @@ Se `vendas.csv` não existir, ele é gerado automaticamente (seed 42, resultado 
 | RF06 | `segmentar_clientes` / `obter_top_clientes` | Bronze, Prata, Ouro e ranking |
 | RF07 | `exportar_resultados` | Exporta JSON e CSV em `outputs/` |
 
-## 📌 Decisões de Implementação
+## Decisões de Implementação
 
 - **faixa_preco**: classificada pela `receita_total` (quantidade × preço), seguindo o código de exemplo do enunciado: Baixo (< R$ 500), Médio (R$ 500 a R$ 2.000), Alto (> R$ 2.000).
 - **Segmentação**: Bronze (< R$ 3.000), Prata (R$ 3.000 a R$ 8.000), Ouro (> R$ 8.000).
@@ -43,7 +43,7 @@ Se `vendas.csv` não existir, ele é gerado automaticamente (seed 42, resultado 
 - **Correção do gerador**: o exemplo do enunciado gravava o primeiro registro duas vezes; a linha duplicada foi removida.
 - **Caminhos relativos**: os arquivos são localizados a partir da pasta do `main.py`, sem caminhos absolutos.
 
-## 🌿 Versionamento
+## Versionamento
 
 Cada funcionalidade foi desenvolvida em uma branch própria (`feat/...`) e mesclada na `main`. Veja o histórico com:
 
